@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工廠</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>工廠包裝儀表板</h1>
+        <select id="yearSelect" class="yearmenu"> </select>
+        <p>年 </p>
+        <select id="monthSelect" class="menu"> </select>
+        <p>月 </p>
+        <select id="dateSelect" class="menu"> </select>
+        <p>日 </p>
+        <button id="reset"  class="reset"> Reset </button>
+        <button id="display"  class="display"> Display </button>
+        <button id="multi" class="multi">Multiple</button>
+    </header>
+
+    <div id="error-message"></div>
+    <div class="toolbar"></div>
+    <div class="dashboard-area"></div>
+    <div class="cellboard"></div>
+    <template id="dashboard-template">
+        <div class="dashboard-container">
+            <div class="dashboard-top">
+                <table>
+                    <tr>
+                        <th>區塊A:即時狀態</th>
+                        <th>區塊B:今日生產數據</th>
+                        <th>區塊C:能耗與稼動率</th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <ul>
+                                <li class="s">目前狀態：<span class="statusE1" class="s"></span></li>
+                                <li class="w">當前功率：</li>
+                                <li class="v">當前電壓：</li>
+                                <li class="sw">封口功率：</li>
+                                <li class="sv">封口電壓：</li>
+                                <li class="i">中斷警示：</li>
+                            </ul>
+                        </td>
+
+                        <td>
+                            <ul>
+                                <li class="b">今日總產量：</li>
+                                <li class="bps">平均速度：</li>
+                                <li class="its">今日中斷次數：</li>
+                                <li class="it">累積中斷時間：</li>
+                            </ul>
+                        </td>
+
+                        <td>
+                            <ul>
+                                <li class="kwh">今日總用電：</li>
+                                <li class="u">設備稼動率：</li>
+                                <li class="wpb">單位產量能耗：</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            
+                <div class="chart-container">
+                    <canvas class="utilizationCanvas"></canvas>
+                </div>
+
+                <div class="line-chart-container">
+                    <canvas class="powerCanvas"></canvas>
+                </div>
+            </div>
+
+            <div class="timeline-container">
+            <canvas class="timelineCanvas">
+            </canvas>
+            </div>
+            
+        </div>
+    </template>
+    <template id="cell-template">
+        <table class="cell">
+            <thead>
+                <tr class="cellheader">
+                    <th>
+                        <span class="cellhead"></span>
+                        <span class="statusE1" data-key="status">--</span>
+                        <span class="status-lamp"></span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="cellbody">
+                    <td class="cellbody">
+                        <ul class="cell-info">
+                            <li>
+                                <span>今日生產量</span><br>
+                                <span class="machine-value" data-key="production">--</span> 袋
+                            </li>
+
+                            <li>
+                                <span>平均速度</span><br>
+                                <span class="machine-value" data-key="speed">--</span> 袋/min
+                            </li>
+
+                            <li>
+                                <span>中斷次數</span><br>
+                                <span class="machine-value" data-key="interrupt">--</span> 次
+                            </li>
+                        </ul>
+
+                        <div class="display-container">
+                            <canvas class="utilizationCanvas"></canvas>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>
